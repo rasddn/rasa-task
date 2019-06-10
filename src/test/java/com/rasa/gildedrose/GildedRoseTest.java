@@ -3,6 +3,7 @@ package com.rasa.gildedrose;
 import com.rasa.gildedrose.entity.Item;
 import com.rasa.gildedrose.processor.AgedBrieProcessor;
 import com.rasa.gildedrose.processor.ProcessorsManager;
+import com.rasa.gildedrose.processor.SulfurasProcessor;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -42,6 +43,7 @@ public class GildedRoseTest {
         List<Item> items = generateRandomItems();
         ProcessorsManager manager = new ProcessorsManager();
         manager.add(ITEM_AGED_BRIE_NAME, new AgedBrieProcessor());
+        manager.add(ITEM_SULFURAS_NAME, new SulfurasProcessor());
         GildedRose gildedRose = new GildedRose(items, manager);
         verify(getAllDaysItemsStringRepresentation(items, gildedRose));
     }
