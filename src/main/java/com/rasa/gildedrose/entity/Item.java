@@ -14,6 +14,14 @@ public class Item {
         this.quality = quality;
     }
 
+    public void decrementSellInBy(int amount) {
+        sellIn -= amount;
+    }
+
+    public void changeQualityValueBy(int amount) {
+        quality += amount;
+    }
+
     @Override
     public String toString() {
         return this.name + ", " + this.sellIn + ", " + this.quality;
