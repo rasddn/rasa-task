@@ -1,15 +1,18 @@
 package com.rasa.gildedrose;
 
 import com.rasa.gildedrose.entity.Item;
+import com.rasa.gildedrose.processor.ProcessorsManager;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
+import static java.util.Arrays.asList;
 import static org.approvaltests.Approvals.verify;
 
 
 public class GildedRoseTest {
-
     private static final int SEED = 100;
     private static final int DAYS_NUMBER = 100;
     private static final int ITEMS_NUMBER = 20;
@@ -22,26 +25,26 @@ public class GildedRoseTest {
     private static final String ITEM_ELIXIR_NAME = "Elixir of the Mongoose";
     private static final String ITEM_SULFURAS_NAME = "Sulfuras, Hand of Ragnaros";
     private static final String ITEM_BACKSTAGE_NAME = "Backstage passes to a TAFKAL80ETC concert";
-
-    private static final String[] itemNames = {
+    private static final List<String> itemNames = asList(
             ITEM_DEXTERY_NAME,
             ITEM_AGED_BRIE_NAME,
             ITEM_ELIXIR_NAME,
             ITEM_SULFURAS_NAME,
-            ITEM_BACKSTAGE_NAME,
-    };
+            ITEM_BACKSTAGE_NAME
+    );
 
     private Random random = new Random(SEED);
 
     @Test
     public void
     generates_updated_items_properties_output() {
-        Item[] items = generateRandomItems();
-        GildedRose gildedRose = new GildedRose(items);
+        List<Item> items = generateRandomItems();
+        ProcessorsManager manager = new ProcessorsManager();
+        GildedRose gildedRose = new GildedRose(items, manager);
         verify(getAllDaysItemsStringRepresentation(items, gildedRose));
     }
 
-    private String getAllDaysItemsStringRepresentation(Item[] items, GildedRose gildedRose) {
+    private String getAllDaysItemsStringRepresentation(List<Item> items, GildedRose gildedRose) {
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < DAYS_NUMBER; i++) {
             String header = "-------- day " + i + " --------\nname, sellIn, quality\n";
@@ -55,7 +58,7 @@ public class GildedRoseTest {
         return builder.toString();
     }
 
-    private StringBuilder getItemsStringRepresentation(Item[] items) {
+    private StringBuilder getItemsStringRepresentation(List<Item> items) {
         StringBuilder builder = new StringBuilder();
         for (Item item : items) {
             builder.append(item).append("\n");
@@ -64,11 +67,12 @@ public class GildedRoseTest {
         return builder;
     }
 
-    private Item[] generateRandomItems() {
-        Item[] items = new Item[ITEMS_NUMBER];
-        for (int i = 0; i < items.length; i++) {
-            items[i] = new Item(getItemName(), generateSellIn(), generateQuality());
-            setSpecificItemsQualities(items[i]);
+    private List<Item> generateRandomItems() {
+        List<Item> items = new ArrayList<>(ITEMS_NUMBER);
+        for (int i = 0; i < ITEMS_NUMBER; i++) {
+            Item item = new Item(getItemName(), generateSellIn(), generateQuality());
+            items.add(item);
+            setSpecificItemsQualities(item);
         }
 
         return items;
@@ -83,7 +87,7 @@ public class GildedRoseTest {
     }
 
     private String getItemName() {
-        return itemNames[random.nextInt(itemNames.length)];
+        return itemNames.get(random.nextInt(itemNames.size()));
     }
 
     private int generateSellIn() {
