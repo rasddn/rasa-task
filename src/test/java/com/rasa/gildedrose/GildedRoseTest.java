@@ -75,10 +75,10 @@ public class GildedRoseTest {
     }
 
     private void setSpecificItemsQualities(Item item) {
-        if (item.name.equals(ITEM_SULFURAS_NAME)) {
-            item.quality = 80;
-        } else if (item.name.equals(ITEM_BACKSTAGE_NAME) && item.sellIn < 0) {
-            item.quality = 0;
+        if (item.getName().equals(ITEM_SULFURAS_NAME)) {
+            item.setQuality(80);
+        } else if (item.getName().equals(ITEM_BACKSTAGE_NAME) && item.getSellIn() < 0) {
+            item.setQuality(0);
         }
     }
 
