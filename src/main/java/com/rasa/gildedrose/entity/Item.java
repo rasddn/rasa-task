@@ -1,4 +1,4 @@
-package com.rasa.gildedrose;
+package com.rasa.gildedrose.entity;
 
 public class Item {
 

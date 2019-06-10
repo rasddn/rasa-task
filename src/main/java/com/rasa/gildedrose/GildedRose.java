@@ -1,5 +1,7 @@
 package com.rasa.gildedrose;
 
+import com.rasa.gildedrose.entity.Item;
+
 class GildedRose {
     Item[] items;
 

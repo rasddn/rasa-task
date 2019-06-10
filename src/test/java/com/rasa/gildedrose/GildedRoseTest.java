@@ -1,5 +1,6 @@
 package com.rasa.gildedrose;
 
+import com.rasa.gildedrose.entity.Item;
 import org.junit.Test;
 
 import java.util.Random;
