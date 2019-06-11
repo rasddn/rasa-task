@@ -36,7 +36,7 @@ public class BackstageProcessorTest {
     }
 
     @Test
-    public void quality_0_after_sell_by_date_passes() {
+    public void quality_equals_0_after_sell_by_date_passes() {
         Item item = new Item("Backstage passes to a TAFKAL80ETC concert", 0, 6);
         processor.update(item);
         assertThat(item.getQuality()).isEqualTo(0);
