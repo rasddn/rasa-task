@@ -1,6 +1,11 @@
 package com.rasa.gildedrose.entity;
 
+import org.springframework.data.annotation.Id;
+
 public class Item {
+
+    @Id
+    private String id;
 
     private String name;
 
@@ -41,9 +46,5 @@ public class Item {
 
     public void setQuality(int quality) {
         this.quality = quality;
-    }
-
-    public void setSellIn(int sellIn) {
-        this.sellIn = sellIn;
     }
 }
