@@ -1,15 +1,12 @@
 package com.rasa.gildedrose;
 
 import com.rasa.gildedrose.entity.Item;
-import com.rasa.gildedrose.processor.AgedBrieProcessor;
-import com.rasa.gildedrose.processor.BackstageProcessor;
-import com.rasa.gildedrose.processor.ProcessorsManager;
-import com.rasa.gildedrose.processor.SulfurasProcessor;
+import com.rasa.gildedrose.processor.*;
+import com.rasa.gildedrose.service.ProcessorsManager;
+import com.rasa.gildedrose.usecase.UpdateItemsUsecase;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 import static java.util.Arrays.asList;
 import static org.approvaltests.Approvals.verify;
@@ -42,15 +39,17 @@ public class GildedRoseTest {
     public void
     generates_updated_items_properties_output() throws Exception {
         List<Item> items = generateRandomItems();
-        ProcessorsManager manager = new ProcessorsManager();
-        manager.add(ITEM_AGED_BRIE_NAME, new AgedBrieProcessor());
-        manager.add(ITEM_SULFURAS_NAME, new SulfurasProcessor());
-        manager.add(ITEM_BACKSTAGE_NAME, new BackstageProcessor());
-        GildedRose gildedRose = new GildedRose(items, manager);
-        verify(getAllDaysItemsStringRepresentation(items, gildedRose));
+        Map<String, Updatable> processors = new HashMap<>();
+        processors.put(ITEM_AGED_BRIE_NAME, new AgedBrieProcessor());
+        processors.put(ITEM_SULFURAS_NAME, new SulfurasProcessor());
+        processors.put(ITEM_BACKSTAGE_NAME, new BackstageProcessor());
+        ProcessorsManager manager = new ProcessorsManager(processors, new ItemProcessor());
+
+        UpdateItemsUsecase updateItemsUsecase = new UpdateItemsUsecase(manager);
+        verify(getAllDaysItemsStringRepresentation(items, updateItemsUsecase));
     }
 
-    private String getAllDaysItemsStringRepresentation(List<Item> items, GildedRose gildedRose) throws Exception {
+    private String getAllDaysItemsStringRepresentation(List<Item> items, UpdateItemsUsecase updateItemsUsecase) throws Exception {
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < DAYS_NUMBER; i++) {
             String header = "-------- day " + i + " --------\nname, sellIn, quality\n";
@@ -58,7 +57,7 @@ public class GildedRoseTest {
                     append(header).
                     append(getItemsStringRepresentation(items)).
                     append("\n\n");
-            gildedRose.updateQuality();
+            updateItemsUsecase.updateQuality(items);
         }
 
         return builder.toString();

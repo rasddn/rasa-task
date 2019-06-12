@@ -1,7 +1,8 @@
-package com.rasa.gildedrose;
+package com.rasa.gildedrose.usecase;
 
 import com.rasa.gildedrose.entity.Item;
-import com.rasa.gildedrose.processor.ProcessorsManager;
+import com.rasa.gildedrose.service.ProcessorsManager;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -10,16 +11,15 @@ import java.util.concurrent.TimeUnit;
 import static java.util.Collections.synchronizedList;
 import static java.util.concurrent.Executors.newFixedThreadPool;
 
-class GildedRose {
-    private List<Item> items;
-    private ProcessorsManager manager;
+@Service
+public class UpdateItemsUsecase {
+    private final ProcessorsManager manager;
 
-    public GildedRose(List<Item> items, ProcessorsManager manager) {
-        this.items = items;
+    public UpdateItemsUsecase(final ProcessorsManager manager) {
         this.manager = manager;
     }
 
-    public void updateQuality() throws InterruptedException {
+    public void updateQuality(List<Item> items) throws InterruptedException {
         List<Item> syncItems = synchronizedList(items);
         ExecutorService executor = newFixedThreadPool(3);
 
