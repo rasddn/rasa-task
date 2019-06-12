@@ -40,7 +40,7 @@ public class GildedRoseTest {
 
     @Test
     public void
-    generates_updated_items_properties_output() {
+    generates_updated_items_properties_output() throws Exception {
         List<Item> items = generateRandomItems();
         ProcessorsManager manager = new ProcessorsManager();
         manager.add(ITEM_AGED_BRIE_NAME, new AgedBrieProcessor());
@@ -50,7 +50,7 @@ public class GildedRoseTest {
         verify(getAllDaysItemsStringRepresentation(items, gildedRose));
     }
 
-    private String getAllDaysItemsStringRepresentation(List<Item> items, GildedRose gildedRose) {
+    private String getAllDaysItemsStringRepresentation(List<Item> items, GildedRose gildedRose) throws Exception {
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < DAYS_NUMBER; i++) {
             String header = "-------- day " + i + " --------\nname, sellIn, quality\n";
