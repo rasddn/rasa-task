@@ -10,16 +10,16 @@ import java.util.List;
 @Component
 public class ItemsUpdater {
     private final ItemsRepository repository;
-    private final UpdateItemsUsecase rose;
+    private final UpdateItemsUsecase usecase;
 
-    public ItemsUpdater(ItemsRepository repository, UpdateItemsUsecase rose) {
+    public ItemsUpdater(ItemsRepository repository, UpdateItemsUsecase usecase) {
         this.repository = repository;
-        this.rose = rose;
+        this.usecase = usecase;
     }
 
     public void update() throws InterruptedException {
         List<Item> items = repository.findAll();
-        rose.updateQuality(items);
+        usecase.updateQuality(items);
         repository.saveAll(items);
     }
 }
